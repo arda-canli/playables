@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Muhammed Arda Canlı, oynanabilir reklamlar</title>
+<meta name="description" content="Oyunlarınıza örnek olabilecek iki oynanabilir reklam: araba eşleştirme ve su sıralama. HTML5, Three.js ve PixiJS. Tarayıcıda hemen oyna.">
+<meta name="theme-color" content="#0d0f1e">
+<meta property="og:title" content="Muhammed Arda Canlı, oynanabilir reklamlar">
+<meta property="og:description" content="Oyunlarınıza örnek olabilecek iki oynanabilir reklam. Tarayıcıda hemen oyna.">
+<meta property="og:image" content="img/triple-park.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230d0f1e'/%3E%3Cpath d='M25 18v28l23-14z' fill='%232bd673'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #0d0f1e;
+    --panel: #171a30;
+    --line: #2a2e4d;
+    --ink: #f3f4fb;
+    --soft: #a3a8c7;
+    --hue: #2bd673;
+    --edge: clamp(18px, 4vw, 64px);
+  }
+  body.pour { --hue: #a97bff; }
+  * { box-sizing: border-box; }
+  html { background: var(--ground); color: var(--ink); }
+  body { margin: 0; font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 1.0625rem; line-height: 1.5; }
+  a { color: inherit; }
+
+  .page { min-height: 100vh; min-height: 100dvh; max-width: 1320px; margin-inline: auto; padding: max(22px, env(safe-area-inset-top)) var(--edge) max(40px, env(safe-area-inset-bottom)); display: grid; grid-template-rows: auto 1fr; gap: clamp(16px, 3vw, 40px); }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-weight: 600; }
+  header nav { display: flex; gap: clamp(14px, 3vw, 22px); color: var(--soft); white-space: nowrap; }
+  header nav a { text-decoration: none; }
+  header nav a:hover, header nav a:focus-visible { color: var(--ink); text-decoration: underline; text-underline-offset: 5px; outline: none; }
+
+  main { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(28px, 6vw, 96px); align-items: center; }
+
+  /* The stage: a phone-sized frame with the real ad running inside it. Each game is its own page; this is a window onto it. */
+  .stage { position: relative; justify-self: center; margin: 0; }
+  .stage::before { content: ""; position: absolute; inset: -18% -40%; z-index: 0; background: radial-gradient(closest-side, color-mix(in srgb, var(--hue) 42%, transparent), transparent); pointer-events: none; }
+  .phone { position: relative; z-index: 1; height: min(84vh, 780px); aspect-ratio: 390 / 844; border-radius: 46px; padding: 11px; background: #05060c; box-shadow: 0 0 0 2px #2c3050, 0 40px 80px rgba(0, 0, 0, 0.6); }
+  .phone iframe { display: block; width: 100%; height: 100%; border: 0; border-radius: 36px; background: #0d0f1e center / cover no-repeat; }
+  .stage figcaption { position: relative; z-index: 1; margin-top: 14px; text-align: center; color: var(--soft); font-size: 0.95rem; }
+
+  h1 { margin: 0; font-weight: 800; font-size: clamp(1.9rem, 3.7vw, 3.5rem); line-height: 1.02; letter-spacing: -0.03em; text-wrap: balance; }
+  .side > p { margin: 18px 0 0; max-width: 56ch; color: var(--soft); font-size: clamp(1.05rem, 1.4vw, 1.2rem); }
+
+  .picker { margin-top: clamp(24px, 3.4vw, 44px); display: grid; gap: 12px; }
+  .game { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 4px 18px; padding: 14px; border-radius: 22px; border: 2px solid var(--line); background: var(--panel); color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .game img { grid-row: 1 / span 3; width: 84px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 12px; }
+  .game.park img { object-position: 50% 68%; }
+  .game.pour img { object-position: 50% 30%; }
+  .game b { align-self: end; font-weight: 800; font-size: 1.5rem; line-height: 1.05; letter-spacing: -0.02em; }
+  .game .kind { color: var(--soft); }
+  .game .facts { display: flex; flex-wrap: wrap; gap: 4px 18px; font-weight: 600; font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+  .game:hover { border-color: #454b78; }
+  .game:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .game[aria-selected="true"] { border-color: var(--hue); background: color-mix(in srgb, var(--hue) 13%, var(--panel)); }
+
+  .about { margin: 18px 0 0; min-height: 4.6em; max-width: 52ch; }
+  .actions { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-block; padding: 12px 24px; border-radius: 99px; border: 2px solid var(--line); background: transparent; color: inherit; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
+  .btn.main { border-color: var(--hue); background: var(--hue); color: #07120b; }
+  .btn:hover, .btn:focus-visible { filter: brightness(1.12); outline: none; border-color: var(--ink); }
+
+  /* Phones: a framed demo inside a phone makes no sense. Each game becomes a poster that opens it full screen. */
+  .posters { display: none; }
+  @media (max-width: 880px) {
+    main { grid-template-columns: 1fr; align-items: start; }
+    .stage, .picker, .about, .actions, .wide-only { display: none; }
+    .posters { display: grid; gap: 16px; margin-top: 26px; }
+    .poster { position: relative; display: block; border-radius: 26px; overflow: hidden; text-decoration: none; aspect-ratio: 4 / 5; background: var(--panel); }
+    .poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .poster.park img { object-position: 50% 66%; }
+    .poster.pour img { object-position: 50% 34%; }
+    .poster div { position: absolute; inset: auto 0 0 0; padding: 70px 18px 18px; background: linear-gradient(transparent, rgba(8, 9, 20, 0.92) 55%); }
+    .poster b { display: block; font-weight: 800; font-size: 1.9rem; letter-spacing: -0.02em; line-height: 1; }
+    .poster span { display: block; color: #cfd3ea; margin-top: 4px; }
+    .poster i { display: inline-block; margin-top: 12px; padding: 10px 28px; border-radius: 99px; font-style: normal; font-weight: 800; background: #2bd673; color: #07120b; }
+    .poster.pour i { background: #a97bff; }
+    .poster:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <span>Muhammed Arda Canlı</span>
+      <nav aria-label="Bağlantılar">
+        <a href="https://www.linkedin.com/in/muhammed-arda-canli/">LinkedIn</a>
+        <a href="https://github.com/arda-canli/playables">Kaynak kod</a>
+      </nav>
+    </header>
+
+    <main>
+      <figure class="stage">
+        <div class="phone"><iframe id="screen" title="Oynanabilir reklam" allow="autoplay"></iframe></div>
+        <figcaption>Canlı. Dokunmazsan reklam kendi kendine oynar.</figcaption>
+      </figure>
+
+      <div class="side">
+        <h1>Oyunlarınıza örnek olabilecek iki oynanabilir reklam hazırladım.</h1>
+        <p>İkisi de oyunlarınızla aynı türde: araba eşleştirme ve su sıralama. Yaklaşımım şu: oyunun kendisini göster, ilk dokunuşu ödüllendir, alan daraldıkça gerilimi yükselt ve tek bir düğmeyle bitir. Her reklam tek bir HTML dosyası; içinde model, görsel ya da ses dosyası yok. <span class="wide-only">Soldaki ekran gerçek reklam, maket değil.</span></p>
+
+        <div class="picker" role="tablist" aria-label="Oyun seç">
+          <button class="game park" role="tab" aria-selected="true" data-id="triple-park">
+            <img src="img/triple-park.jpg" alt="">
+            <b lang="en">Triple Park</b>
+            <span class="kind">Araba eşleştirme bulmacası</span>
+            <span class="facts"><span>Three.js</span><span>645 KB</span><span>17 saniye</span></span>
+          </button>
+          <button class="game pour" role="tab" aria-selected="false" data-id="pour-decisions">
+            <img src="img/pour-decisions.jpg" alt="">
+            <b lang="en">Pour Decisions</b>
+            <span class="kind">İksir sıralama bulmacası</span>
+            <span class="facts"><span>PixiJS</span><span>621 KB</span><span>20 saniye</span></span>
+          </button>
+        </div>
+
+        <p class="about" id="about"></p>
+        <div class="actions">
+          <a class="btn main" id="full" href="triple-park/">Tam ekran oyna</a>
+          <button class="btn" id="again" type="button">Baştan başlat</button>
+        </div>
+
+        <div class="posters">
+          <a class="poster park" href="triple-park/"><img src="img/triple-park.jpg" alt="Triple Park: eşleşen üç araba kamyona biniyor"><div><b lang="en">Triple Park</b><span>Araba eşleştirme bulmacası. Three.js, 645 KB.</span><i>Oyna</i></div></a>
+          <a class="poster pour" href="pour-decisions/"><img src="img/pour-decisions.jpg" alt="Pour Decisions: bir şişe diğerine sarı iksir döküyor"><div><b lang="en">Pour Decisions</b><span>İksir sıralama bulmacası. PixiJS, 621 KB.</span><i>Oyna</i></div></a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const ABOUT = {
+      'triple-park': 'Şeridin önündeki arabaya dokun. Aynı renkten üç araba kamyona binip gider. Yedi park yeri dolarsa oyun biter. İlk hamleyi reklam kendi yapar ve bilerek yanlış yapar.',
+      'pour-decisions': 'Bir şişeye, sonra ötekine dokun ve renkleri ayır. Soru işaretli katmanların rengi ancak yüzeye çıkınca belli olur. Çıkış kalmayınca rafta bir “+1 şişe” belirir.',
+    };
+    const screen = document.getElementById('screen');
+    const tabs = [...document.querySelectorAll('.game')];
+    const wide = matchMedia('(min-width: 881px)');
+    let current = 'triple-park';
+
+    // Each game is a separate page. The frame is only a window onto one of them at a time.
+    function show(id) {
+      current = id;
+      for (const t of tabs) t.setAttribute('aria-selected', String(t.dataset.id === id));
+      document.body.classList.toggle('pour', id === 'pour-decisions');
+      document.getElementById('about').textContent = ABOUT[id];
+      document.getElementById('full').href = id + '/';
+      screen.style.backgroundImage = `url(img/${id}.jpg)`;
+      if (wide.matches) screen.src = id + '/?replay=0';
+    }
+    for (const t of tabs) t.addEventListener('click', () => show(t.dataset.id));
+    document.getElementById('again').addEventListener('click', () => show(current));
+    // On a phone the frame is hidden, so the game is never loaded there. If the window grows, load it.
+    wide.addEventListener('change', () => (wide.matches ? show(current) : screen.removeAttribute('src')));
+    show(current);
+  </script>
+</body>
+</html>

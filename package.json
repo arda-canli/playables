@@ -1,0 +1,31 @@
+{
+  "name": "playables",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:pour": "GAME=pour-decisions vite",
+    "dev:park": "GAME=triple-park vite",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:logic": "tsx games/triple-park/test/logic.test.ts && tsx games/pour-decisions/test/logic.test.ts",
+    "test:smoke": "node scripts/smoke.mjs triple-park && node scripts/smoke.mjs pour-decisions",
+    "test:touch": "node scripts/touch.mjs && node scripts/touch-pd.mjs",
+    "test": "npm run typecheck && npm run test:logic && npm run build && npm run test:smoke && npm run test:touch"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "@types/three": "^0.186.0",
+    "puppeteer-core": "^24.43.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  },
+  "dependencies": {
+    "@fontsource/fredoka": "^5.3.0",
+    "pixi.js": "^8.21.0",
+    "three": "^0.186.0"
+  }
+}
