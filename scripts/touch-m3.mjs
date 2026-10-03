@@ -17,7 +17,8 @@ page.on('pageerror', (e) => problems.push('pageerror: ' + e.message));
 page.on('console', (m) => m.type() === 'error' && problems.push('console: ' + m.text()));
 // The install opens the store in a new tab, which would leave this tab in the background with no frames.
 await page.evaluateOnNewDocument(() => (window.open = (url) => ((window.__opened = url), null)));
-await page.goto(`file://${resolve(root, 'dist/match-3-game/index.html')}?${query}`);
+// A store link makes the install button behave as in a real ad (the portfolio build without one opens the ad full screen).
+await page.goto(`file://${resolve(root, 'dist/match-3-game/index.html')}?${query}&store=https://example.com/app`);
 
 const dbg = (fn, ...args) => page.evaluate(fn, ...args);
 const state = () => dbg(() => { const d = window.__game.debug; return { phase: d.phase, stage: d.stage, busy: d.busy, ended: d.ended, guideStep: d.guideStep, movesLeft: d.movesLeft, goals: d.goals, picks: d.picks, rescue: d.rescue, next: d.next() }; });

@@ -28,7 +28,8 @@ const DEFAULTS: Config = {
   ending: 'win',
   headline: 'calm',
   ghostOpening: true,
-  storeUrl: 'https://www.linkedin.com/in/muhammed-arda-canli/',
+  // No store by default: on the portfolio the install button opens the ad full screen. Ad builds pass ?store=.
+  storeUrl: '',
   showReplay: true,
   muted: false,
   autoplay: false,

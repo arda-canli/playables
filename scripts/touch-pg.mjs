@@ -20,7 +20,8 @@ page.on('console', (m) => m.type() === 'error' && problems.push('console: ' + m.
 await page.evaluateOnNewDocument(() => {
   window.open = () => ((window.__opened = (window.__opened ?? 0) + 1), null);
 });
-await page.goto(`file://${resolve(root, 'dist/puzzle-game/index.html')}?mute=1&ending=${mode}`);
+// A store link makes the install button behave as in a real ad (the portfolio build without one opens the ad full screen).
+await page.goto(`file://${resolve(root, 'dist/puzzle-game/index.html')}?mute=1&ending=${mode}&store=https://example.com/app`);
 
 const state = () => page.evaluate(() => { const d = window.__game.debug; return { phase: d.phase, balls: d.balls, left: d.left, smashed: d.smashed, offering: d.offering, giant: d.giant, cooldown: d.cooldown }; });
 const screenOf = (p) => page.evaluate((q) => window.__game.debug.screenOf(q), p);

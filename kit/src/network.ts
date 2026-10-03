@@ -44,8 +44,20 @@ export function openStore(url: string): void {
       window.mraid.open(url);
       return;
     default:
-      window.open(url, '_blank', 'noopener');
+      // On the open web a store link means a UA test page: open it. Without one this is the portfolio,
+      // where there is no store, so the button plays the ad properly instead.
+      if (url) window.open(url, '_blank', 'noopener');
+      else playFullScreen();
   }
+}
+
+/** Inside the portfolio's phone frame: open the ad full screen. Already full screen: play it again from the start. */
+function playFullScreen(): void {
+  if (window.top !== window.self) {
+    const u = new URL(location.href);
+    u.searchParams.delete('replay');
+    window.open(u.href, '_top');
+  } else location.reload();
 }
 
 /** Calls start() once the ad container says it is ready. Immediately on the open web. */
