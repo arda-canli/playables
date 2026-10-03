@@ -25,8 +25,11 @@ export function detectNetwork(): NetworkName {
   return 'web';
 }
 
-/** The install button. Must only ever be called from a real user gesture. */
-export function openStore(url: string): void {
+/**
+ * The install button. Must only ever be called from a real user gesture.
+ * `ended`: the ad is over (its end card, or the last offer before it).
+ */
+export function openStore(url: string, ended = false): void {
   switch (detectNetwork()) {
     case 'meta':
       window.FbPlayableAd!.onCTAClick();
@@ -44,20 +47,18 @@ export function openStore(url: string): void {
       window.mraid.open(url);
       return;
     default:
-      // On the open web a store link means a UA test page: open it. Without one this is the portfolio,
-      // where there is no store, so the button plays the ad properly instead.
-      if (url) window.open(url, '_blank', 'noopener');
-      else playFullScreen();
+      // The open web, i.e. the portfolio. Mid-ad inside its phone frame, the button opens the ad full screen;
+      // once the ad is over, or when it is already full screen, it goes to the link like a real install button.
+      if (!ended && window.top !== window.self) openFullScreen();
+      else if (url) window.open(url, '_blank', 'noopener');
   }
 }
 
-/** Inside the portfolio's phone frame: open the ad full screen. Already full screen: play it again from the start. */
-function playFullScreen(): void {
-  if (window.top !== window.self) {
-    const u = new URL(location.href);
-    u.searchParams.delete('replay');
-    window.open(u.href, '_top');
-  } else location.reload();
+/** From the portfolio's phone frame to the same ad, full screen. */
+function openFullScreen(): void {
+  const u = new URL(location.href);
+  u.searchParams.delete('replay');
+  window.open(u.href, '_top');
 }
 
 /** Calls start() once the ad container says it is ready. Immediately on the open web. */

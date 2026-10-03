@@ -633,7 +633,7 @@ export class Game {
 
   private cta(where: 'button' | 'endcard'): void {
     this.director.log('cta', { where, phase: this.director.phase, seconds: Math.round(this.director.time * 10) / 10 });
-    openStore(this.cfg.storeUrl);
+    openStore(this.cfg.storeUrl, this.ended);
   }
 
   // ---------------------------------------------------------------- frame

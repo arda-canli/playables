@@ -51,6 +51,10 @@
   h1 { margin: 0; font-weight: 800; font-size: clamp(1.9rem, 3.7vw, 3.5rem); line-height: 1.02; letter-spacing: -0.03em; text-wrap: balance; }
   .side > p { margin: 18px 0 0; max-width: 56ch; color: var(--soft); font-size: clamp(1.05rem, 1.4vw, 1.2rem); }
 
+  /* The playful heads-up about where the install button really goes. */
+  .surprise { margin: 20px 0 0; max-width: 56ch; display: flex; gap: 12px; align-items: flex-start; padding: 14px 18px; border-radius: 18px; border: 2px dashed var(--hue); background: color-mix(in srgb, var(--hue) 10%, var(--panel)); font-size: 1rem; line-height: 1.45; }
+  .surprise svg { flex: none; width: 26px; height: 26px; margin-top: 1px; color: var(--hue); }
+  .surprise b { color: var(--hue); }
   .picker { margin-top: clamp(24px, 3.4vw, 44px); display: grid; gap: 12px; }
   .game { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 4px 18px; padding: 14px; border-radius: 22px; border: 2px solid var(--line); background: var(--panel); color: inherit; font: inherit; text-align: left; cursor: pointer; }
   .game img { grid-row: 1 / span 3; width: 84px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 12px; }
@@ -111,6 +115,7 @@
       <div class="side">
         <h1>Üç oynanabilir reklam hazırladım.</h1>
         <p>Biri Royal Smash, ikisi Match Squad tarzında 3 örnek oynanabilir reklam hazırlamaya çalıştım. Sıkıntı olmaması için isim ve bütün çizimleri özgün şekilde ayarladım. Yaklaşımım şu: oyunun kendisini göster, ilk dokunuşu ödüllendir, gerilimi oyunun kendi kıtlığıyla kur (top, hamle, kasa) ve oyunun satış anını yükleme düğmesine çevir. Her reklam tek bir HTML dosyası; içinde model, görsel ya da ses dosyası yok. <span class="wide-only">Soldaki ekran gerçek reklam, mockup değil. Tam ekranda da test edilebilir.</span></p>
+        <p class="surprise"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z" fill="currentColor"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z" fill="currentColor" opacity=".7"/></svg><span><b>Küçük bir sürpriz:</b> Oyunun sonundaki “PLAY FREE”, “ROLL AGAIN” gibi düğmeler seni mağazaya değil, LinkedIn profilime götürüyor. Gerçek bir reklamda orası App Store olurdu; burada indirilecek şey benim. <span class="wide-only">Oyun sırasındaki “PLAY NOW” ise reklamı tam ekranda açar.</span></span></p>
 
         <div class="picker" role="tablist" aria-label="Oyun seç">
           <button class="game rescue" role="tab" aria-selected="true" data-id="rescue-game">

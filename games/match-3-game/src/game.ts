@@ -721,7 +721,7 @@ export class Game {
     if (this.time - this.lastCta < 0.6) return;
     this.lastCta = this.time;
     this.director.log('cta', { where, phase: this.director.phase, seconds: Math.round(this.director.time * 10) / 10 });
-    openStore(this.cfg.storeUrl);
+    openStore(this.cfg.storeUrl, this.ended);
     if (this.rescueBadge && this.director.phase !== 'endcard') this.finish('fail');
   }
 

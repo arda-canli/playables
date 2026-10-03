@@ -47,7 +47,7 @@ and can be picked from the URL:
 | `headline` | `calm`, `challenge`, `dare` | The framing line at the top |
 | `ghost` | `1` (default), `0` | The botched opening move played by the ad itself |
 | `replay` | `1` (default), `0` | Replay link on the end card. Ad builds use `0` |
-| `store` | `https://...` | Where the install button goes on the open web. Without it (the portfolio) the button opens the ad full screen from the phone frame, or plays it again when it is already full screen. Inside an ad network the network's own call is used either way |
+| `store` | `https://...` | Where the install button goes on the open web (default: the author's LinkedIn, the portfolio's "store"). Mid-ad inside the portfolio's phone frame the button opens the ad full screen instead; once the ad is over it goes to the link. Inside an ad network the network's own call is used either way |
 | `mute` | `0`, `1` | Sound |
 | `autoplay` | `0`, `1` | The ad plays itself. Used by the tests |
 | `debug` | `0`, `1` | Prints the director's event log to the console |
