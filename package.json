@@ -9,11 +9,12 @@
     "dev:park": "GAME=triple-park vite",
     "dev:puzzle": "GAME=puzzle-game vite",
     "dev:match3": "GAME=match-3-game vite",
+    "dev:rescue": "GAME=rescue-game vite",
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
-    "test:logic": "tsx games/triple-park/test/logic.test.ts && tsx games/pour-decisions/test/logic.test.ts && tsx games/puzzle-game/test/sim.test.ts && tsx games/match-3-game/test/logic.test.ts",
-    "test:smoke": "node scripts/smoke.mjs triple-park && node scripts/smoke.mjs pour-decisions && node scripts/smoke.mjs puzzle-game && node scripts/smoke.mjs match-3-game",
-    "test:touch": "node scripts/touch.mjs && node scripts/touch-pd.mjs && node scripts/touch-pg.mjs && node scripts/touch-pg.mjs win && node scripts/touch-m3.mjs",
+    "test:logic": "tsx games/triple-park/test/logic.test.ts && tsx games/pour-decisions/test/logic.test.ts && tsx games/puzzle-game/test/sim.test.ts && tsx games/match-3-game/test/logic.test.ts && tsx games/rescue-game/test/logic.test.ts",
+    "test:smoke": "node scripts/smoke.mjs triple-park && node scripts/smoke.mjs pour-decisions && node scripts/smoke.mjs puzzle-game && node scripts/smoke.mjs match-3-game && node scripts/smoke.mjs rescue-game && node scripts/smoke.mjs rescue-game \"autoplay=1&mute=1&ending=shield\" 390x844 rgs 1 fail",
+    "test:touch": "node scripts/touch.mjs && node scripts/touch-pd.mjs && node scripts/touch-pg.mjs && node scripts/touch-pg.mjs win && node scripts/touch-m3.mjs && node scripts/touch-rg.mjs && node scripts/touch-rg.mjs mute=1 844x390",
     "test": "npm run typecheck && npm run test:logic && npm run build && npm run test:smoke && npm run test:touch"
   },
   "devDependencies": {

@@ -1,0 +1,193 @@
+/* Violet and gold over the shared kit UI, a chunky display face. Loaded after kit/src/ui.css. */
+@font-face {
+  font-family: 'Lilita One';
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  src: url('../../../node_modules/@fontsource/lilita-one/files/lilita-one-latin-400-normal.woff2') format('woff2');
+}
+
+html,
+body {
+  background: #2a1066;
+}
+#ui {
+  --ink: #2a1066;
+}
+
+.headline,
+.toast,
+.floaters > div,
+.banner,
+.cta,
+.ec-logo,
+.ec-title,
+.ec-cta,
+.rg-hud,
+.ec-chips {
+  font-family: 'Lilita One', Fredoka, 'Arial Rounded MT Bold', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* The kit's goal pill is replaced by the dice meter. */
+.goal {
+  display: none !important;
+}
+.headline {
+  font-size: calc(var(--u) * 8.6);
+}
+.toast.good {
+  color: #ffd23a;
+}
+.banner {
+  background: linear-gradient(#ffb23a, #ff8a1f);
+}
+.banner.hot {
+  background: linear-gradient(#ff5468, #e8203a);
+}
+.cta,
+.ec-cta {
+  border: calc(var(--u) * 0.6) solid #fff3b0;
+}
+
+/* ---- Dice meter, top left ---- */
+.rg-dice {
+  position: absolute;
+  top: calc(var(--safe-t) + var(--u) * 3);
+  left: calc(var(--u) * 3);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.2);
+  padding: calc(var(--u) * 1.1) calc(var(--u) * 1.6) calc(var(--u) * 1.1) calc(var(--u) * 3);
+  background: linear-gradient(#6d2fe0, #3a1190);
+  border: calc(var(--u) * 0.6) solid #ffc93c;
+  border-radius: 99px;
+  box-shadow: 0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.55);
+  color: #fff;
+  font-size: calc(var(--u) * 4.6);
+}
+.rg-dice b {
+  font-weight: 400;
+  margin-right: calc(var(--u) * 0.6);
+  text-shadow: 0 0.08em 0 #2a1066;
+}
+.rg-slot {
+  display: block;
+  width: calc(var(--u) * 7.4);
+  height: calc(var(--u) * 7.4);
+  border-radius: calc(var(--u) * 1.6);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 calc(var(--u) * 0.4) rgba(255, 255, 255, 0.28);
+}
+.rg-slot svg {
+  display: block;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.4);
+}
+.rg-slot.on {
+  background: none;
+  box-shadow: none;
+}
+.rg-slot.on svg {
+  opacity: 1;
+  transform: none;
+}
+.rg-slot.pop svg {
+  animation: rg-pop 0.45s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+@keyframes rg-pop {
+  0% { transform: scale(0.3) rotate(-30deg); }
+  60% { transform: scale(1.3) rotate(8deg); }
+  100% { transform: none; }
+}
+.rg-dice.full {
+  animation: rg-glow 0.6s ease-in-out infinite alternate;
+}
+@keyframes rg-glow {
+  from { box-shadow: 0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.55), 0 0 0 rgba(255, 210, 90, 0); }
+  to { box-shadow: 0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.55), 0 0 calc(var(--u) * 7) rgba(255, 210, 90, 0.9); }
+}
+
+.rg-fly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--u) * 9);
+  filter: drop-shadow(0 calc(var(--u) * 0.6) 0 rgba(42, 16, 102, 0.5));
+}
+.rg-fly svg {
+  display: block;
+  width: 100%;
+}
+
+/* ---- Mary's name tag, follows her cab ---- */
+.rg-tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 2.6);
+  font-size: calc(var(--u) * 3.9);
+  color: #fff;
+  background: linear-gradient(#ff5fb2, #c2207f);
+  border: calc(var(--u) * 0.5) solid #fff;
+  border-radius: 99px;
+  box-shadow: 0 calc(var(--u) * 0.6) 0 rgba(42, 16, 102, 0.5);
+  will-change: transform;
+}
+
+/* ---- Coins, top right, for the payoff ---- */
+.rg-coins {
+  position: absolute;
+  top: calc(var(--safe-t) + var(--u) * 3);
+  right: calc(var(--u) * 3);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.4);
+  padding: calc(var(--u) * 1) calc(var(--u) * 3.4) calc(var(--u) * 1) calc(var(--u) * 1.2);
+  background: linear-gradient(#6d2fe0, #3a1190);
+  border: calc(var(--u) * 0.6) solid #ffc93c;
+  border-radius: 99px;
+  color: #fff;
+  font-size: calc(var(--u) * 6.4);
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.55);
+  text-shadow: 0 0.08em 0 #2a1066;
+}
+.rg-coins svg {
+  display: block;
+  width: calc(var(--u) * 8);
+}
+.rg-coins b {
+  font-weight: 400;
+}
+
+/* ---- End card ---- */
+.endcard {
+  background: radial-gradient(ellipse at center, rgba(70, 32, 165, 0.9) 0%, rgba(26, 8, 70, 0.96) 100%);
+}
+.ec-logo span:first-of-type {
+  color: #ffffff;
+}
+.ec-logo span:last-of-type {
+  color: #ffc93c;
+}
+.ec-chips {
+  display: flex;
+  gap: calc(var(--u) * 2.4);
+  font-size: calc(var(--u) * 4.2);
+  color: #fff;
+  animation: ec-pop 0.55s cubic-bezier(0.3, 1.6, 0.5, 1) 0.9s both;
+}
+.ec-chips span {
+  padding: calc(var(--u) * 0.8) calc(var(--u) * 3);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  border: calc(var(--u) * 0.45) solid rgba(255, 255, 255, 0.35);
+}
+@media (orientation: landscape) {
+  .ec-chips {
+    grid-column: 2;
+  }
+}

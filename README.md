@@ -9,6 +9,7 @@ HTML file with no external requests, which is what ad networks require.
 | **Pour Decisions** | PixiJS | Water sort (tap a bottle, tap another, pour; mystery layers; "+1 bottle" rescue) | playable |
 | **Puzzle Game** | Three.js + cannon-es | Physics cannon smash in the style of Royal Smash (tap or drag to aim, jam jars on a royal pedestal, "+3 balls" rescue) | playable |
 | **Match-3 Game** | PixiJS | Match-3 that pays out dice, then a pick-a-safe bank heist, in the style of Match Squad | playable |
+| **Rescue Game** | PixiJS | Character in danger, the format of Match Squad's own ads: bricks pour onto a trapped pig, matches dig drains, the dice pay for a slingshot attack | playable |
 
 Live: https://arda-canli.github.io/playables/
 
@@ -20,6 +21,7 @@ npm run dev:park       # Triple Park on http://localhost:5173 (also on your LAN,
 npm run dev:pour       # Pour Decisions, same address
 npm run dev:puzzle      # Puzzle Game
 npm run dev:match3      # Match-3 Game
+npm run dev:rescue      # Rescue Game
 npm run build          # dist/<game>/index.html, fails if a playable exceeds the 2 MB budget
 npm test               # everything below, in order
 npm run test:logic     # brute-forces every possible order of moves against each level's rig (Puzzle Game: runs its physics headless)
@@ -32,7 +34,7 @@ npm run test:touch     # plays them with real touch events, including wrong, blo
 Every push to `main` runs the type check and the rig tests, builds each playable to its single HTML file,
 assembles `site-dist/` (`scripts/site.mjs`: the portfolio page plus one folder per game) and publishes it to
 GitHub Pages. Each game keeps its own URL; the portfolio's phone frame is only a window onto one of them.
-`/cypher/` is the same page for the Cypher Games application, showing Puzzle Game and Match-3 Game.
+`/cypher/` is the same page for the Cypher Games application, showing Rescue Game, Puzzle Game and Match-3 Game.
 
 ## Variants
 
@@ -56,6 +58,9 @@ Pour Decisions and Puzzle Game take the same params, with `ending=stuck` (defaul
 Match-3 Game takes `ending=lose` (default: the third safe is empty and the jackpot turns out to be one safe away) or
 `ending=win` (jackpot), and headlines `calm` "Match & roll the dice!", `challenge` "Can you rob the bank?",
 `dare` "Only pros hit the jackpot".
+Rescue Game takes `ending=win` (default: the shot brings the crane down) or `ending=shield` (Mary's shield
+blocks it: one roll short), and headlines `calm` "Save your pig!", `challenge` "Mary trapped your pig!" (default),
+`dare` "Can you get revenge?".
 Puzzle Game's headlines are the ones the real game's store page already uses: `calm` "Smash every jar!",
 `challenge` "One shot, max damage!", `dare` "Too hard for you?" (default).
 
@@ -77,6 +82,12 @@ games/puzzle-game/src/
   sim.ts            cannon-es world + rules + the rubber-band rig, in fixed ticks; no rendering, so it tests headless
   pieces.ts         instanced jars, lids, columns, planks and crown blocks that copy their bodies: 6 draw calls
   cannon.ts camera.ts world.ts fx.ts sfx.ts hud.ts   the royal cannon, framing, scenery, jam and glass, sounds, pig king
+games/rescue-game/src/
+  logic.ts          match-3 without gravity: matched tiles leave holes; the hint looks for a drain to the bottom
+  sand.ts rig.ts    falling bricks on a grid, and the rescue stage as one simulation (board, bricks, bucket)
+  rescueview.ts     crane, tank, pig, board, and up to 3,200 bricks as particles gliding to their grid cells
+  rollview.ts attackview.ts   the dice tray, and the slingshot with ballistics and aim assist
+  art.ts            every picture written as SVG in code and rasterised into textures at start-up
 games/match-3-game/src/
   logic.ts          match-3 rules (matches, L/T shapes, TNT, gravity), the authored refill and the heist; no rendering
   board.ts heist.ts the board's swap/pop/fall animations; the dice roll and the vault truck
@@ -134,6 +145,29 @@ Everything runs on fixed 60 Hz ticks, so the same shots always produce the same 
 `test/sim.test.ts` plays the ad headless and checks that untouched stacks never drift, that the botched opening
 takes exactly one jar and no ball, that the guided shot brings a tower down, that the giant ball always finishes the job,
 and how many jars 24 sloppy runs leave behind (mostly 1-4). Autoplay in the browser plays the exact game the test predicts.
+
+### The ad script (Rescue Game)
+
+The format is the one Match Squad's own Meta ads use, a character in danger over a real match-3 board,
+made playable. It then leads into the game's real loop: dice, an attack with a slingshot, revenge.
+
+| Time | Beat | Hook |
+| --- | --- | --- |
+| 0-2 s | Mary's crane tips a bucket of bricks into a glass tank. Your pig stands on a pedestal inside, the heap already high, a red line at his chest. Mary laughs | character in danger, head start |
+| 2-4 s | "Dig a way out!" The hand swipes the first match. Nothing falls on this board: matched tiles leave holes, and the bricks pour into them | free first win, teaches the rule |
+| 4-6 s | The second match finishes a channel to the bottom. "GREAT! THEY DRAIN!": the bricks gush through and out of the board. Every match pays a die that flies to the meter | the aha moment, numbers going up |
+| idle | The bucket keeps pouring. The heap climbs, the line pulses, the pig shivers, a heartbeat joins the music | the squeeze |
+| 6-9 s | Three dice: ROLL. They tumble and land on three hammers. ATTACK TIME | variable reward |
+| 9-13 s | Mary's crane, crosshairs, the squad's attacker in a slingshot. PULL BACK: a dotted arc previews the flight. Let go | a second, physical verb |
+| end | `win`: the crane comes down, the tank shatters, the pig cheers, coins roll up to 2,500, REVENGE. `shield`: Mary's shield blocks the shot, SO CLOSE, ROLL AGAIN | payoff / near miss |
+
+The bricks are a real falling-sand simulation (`sand.ts`): each brick drops, slides off slopes and spreads,
+and leaves through the bottom of any column of holes. The bucket's rate is a rubber band (`rig.ts`): it pours
+hard while the heap is low and stops near the line, so the squeeze always comes and the pig is never buried.
+`test/logic.test.ts` checks the board (no line to start with, no dead end in any order of moves), that the guided
+move and the hint open a channel, that the drain starts right after the second match, and that an idle viewer's
+heap peaks just short of the pig. The slingshot snaps a near shot onto the closest crosshair; after two misses
+it snaps every shot.
 
 ### The ad script (Match-3 Game)
 

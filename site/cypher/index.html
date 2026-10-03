@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Muhammed Arda Canlı, oynanabilir reklamlar</title>
-<meta name="description" content="İki oynanabilir reklam: fizikli top atışı ve zarlı match-3 soygunu. HTML5, Three.js ve PixiJS. Tarayıcıda hemen oyna.">
+<meta name="description" content="Üç oynanabilir reklam: fizikli top atışı ve zarlı match-3 soygunu. HTML5, Three.js ve PixiJS. Tarayıcıda hemen oyna.">
 <meta name="theme-color" content="#0d0f1e">
 <meta property="og:title" content="Muhammed Arda Canlı, oynanabilir reklamlar">
 <meta property="og:description" content="Royal Smash ve Match Squad tarzında iki oynanabilir reklam. Tarayıcıda hemen oyna.">
-<meta property="og:image" content="../img/puzzle-game.jpg">
+<meta property="og:image" content="../img/rescue-game.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230d0f1e'/%3E%3Cpath d='M25 18v28l23-14z' fill='%232bd673'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,9 +21,10 @@
     --line: #2a2e4d;
     --ink: #f3f4fb;
     --soft: #a3a8c7;
-    --hue: #5fe0ff;
+    --hue: #ff8fd0;
     --edge: clamp(18px, 4vw, 64px);
   }
+  body.puzzle { --hue: #5fe0ff; }
   body.match3 { --hue: #ffc93c; }
   * { box-sizing: border-box; }
   html { background: var(--ground); color: var(--ink); }
@@ -53,6 +54,7 @@
   .picker { margin-top: clamp(24px, 3.4vw, 44px); display: grid; gap: 12px; }
   .game { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 4px 18px; padding: 14px; border-radius: 22px; border: 2px solid var(--line); background: var(--panel); color: inherit; font: inherit; text-align: left; cursor: pointer; }
   .game img { grid-row: 1 / span 3; width: 84px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 12px; }
+  .game.rescue img { object-position: 50% 45%; }
   .game.puzzle img { object-position: 50% 32%; }
   .game.match3 img { object-position: 50% 55%; }
   .game b { align-self: end; font-weight: 800; font-size: 1.5rem; line-height: 1.05; letter-spacing: -0.02em; }
@@ -76,12 +78,14 @@
     .posters { display: grid; gap: 16px; margin-top: 26px; }
     .poster { position: relative; display: block; border-radius: 26px; overflow: hidden; text-decoration: none; aspect-ratio: 4 / 5; background: var(--panel); }
     .poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .poster.rescue img { object-position: 50% 40%; }
     .poster.puzzle img { object-position: 50% 30%; }
     .poster.match3 img { object-position: 50% 52%; }
     .poster div { position: absolute; inset: auto 0 0 0; padding: 70px 18px 18px; background: linear-gradient(transparent, rgba(8, 9, 20, 0.92) 55%); }
     .poster b { display: block; font-weight: 800; font-size: 1.9rem; letter-spacing: -0.02em; line-height: 1; }
     .poster span { display: block; color: #cfd3ea; margin-top: 4px; }
-    .poster i { display: inline-block; margin-top: 12px; padding: 10px 28px; border-radius: 99px; font-style: normal; font-weight: 800; background: #5fe0ff; color: #07120b; }
+    .poster i { display: inline-block; margin-top: 12px; padding: 10px 28px; border-radius: 99px; font-style: normal; font-weight: 800; background: #ff8fd0; color: #07120b; }
+    .poster.puzzle i { background: #5fe0ff; }
     .poster.match3 i { background: #ffc93c; }
     .poster:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
   }
@@ -105,11 +109,17 @@
       </figure>
 
       <div class="side">
-        <h1>İki oynanabilir reklam hazırladım.</h1>
-        <p>Biri Royal Smash, biri Match Squad tarzında 2 örnek oynanabilir reklam hazırlamaya çalıştım. Sıkıntı olmaması için isim ve bütün çizimleri özgün şekilde ayarladım. Yaklaşımım şu: oyunun kendisini göster, ilk dokunuşu ödüllendir, gerilimi oyunun kendi kıtlığıyla kur (top, hamle, kasa) ve oyunun satış anını yükleme düğmesine çevir. Her reklam tek bir HTML dosyası; içinde model, görsel ya da ses dosyası yok. <span class="wide-only">Soldaki ekran gerçek reklam, mockup değil. Tam ekranda da test edilebilir.</span></p>
+        <h1>Üç oynanabilir reklam hazırladım.</h1>
+        <p>Biri Royal Smash, ikisi Match Squad tarzında 3 örnek oynanabilir reklam hazırlamaya çalıştım. Sıkıntı olmaması için isim ve bütün çizimleri özgün şekilde ayarladım. Yaklaşımım şu: oyunun kendisini göster, ilk dokunuşu ödüllendir, gerilimi oyunun kendi kıtlığıyla kur (top, hamle, kasa) ve oyunun satış anını yükleme düğmesine çevir. Her reklam tek bir HTML dosyası; içinde model, görsel ya da ses dosyası yok. <span class="wide-only">Soldaki ekran gerçek reklam, mockup değil. Tam ekranda da test edilebilir.</span></p>
 
         <div class="picker" role="tablist" aria-label="Oyun seç">
-          <button class="game puzzle" role="tab" aria-selected="true" data-id="puzzle-game">
+          <button class="game rescue" role="tab" aria-selected="true" data-id="rescue-game">
+            <img src="../img/rescue-game.jpg" alt="">
+            <b lang="en">Rescue Game</b>
+            <span class="kind">Tehlikedeki karakter, zar ve sapan</span>
+            <span class="facts"><span>PixiJS</span><span>676 KB</span><span>18 saniye</span></span>
+          </button>
+          <button class="game puzzle" role="tab" aria-selected="false" data-id="puzzle-game">
             <img src="../img/puzzle-game.jpg" alt="">
             <b lang="en">Puzzle Game</b>
             <span class="kind">Fizikli top atışı bulmacası</span>
@@ -125,11 +135,12 @@
 
         <p class="about" id="about"></p>
         <div class="actions">
-          <a class="btn main" id="full" href="../puzzle-game/">Tam ekran oyna</a>
+          <a class="btn main" id="full" href="../rescue-game/">Tam ekran oyna</a>
           <button class="btn" id="again" type="button">Baştan başlat</button>
         </div>
 
         <div class="posters">
+          <a class="poster rescue" href="../rescue-game/"><img src="../img/rescue-game.jpg" alt="Rescue Game: vincin döktüğü tuğlalar, eşleşmelerin açtığı delikten aşağı akıyor"><div><b lang="en">Rescue Game</b><span>Tehlikedeki karakter, zar ve sapan. PixiJS, 676 KB.</span><i>Oyna</i></div></a>
           <a class="poster puzzle" href="../puzzle-game/"><img src="../img/puzzle-game.jpg" alt="Puzzle Game: top reçel kavanozlarından oluşan kuleyi yıkıyor"><div><b lang="en">Puzzle Game</b><span>Fizikli top atışı bulmacası. Three.js, 771 KB.</span><i>Oyna</i></div></a>
           <a class="poster match3" href="../match-3-game/"><img src="../img/match-3-game.jpg" alt="Match-3 Game: açılan kasalar, seçilmeyen kasada büyük ödül"><div><b lang="en">Match-3 Game</b><span>Match-3, zar ve kasa soygunu. PixiJS, 675 KB.</span><i>Oyna</i></div></a>
         </div>
@@ -139,18 +150,20 @@
 
   <script>
     const ABOUT = {
+      'rescue-game': 'Mary’nin vinci, domuzun durduğu cam tanka tuğla döküyor. Taşları kaydırıp eşleştir: açılan delikler tuğlaları aşağı akıtır ve her eşleşme bir zar kazandırır. Üç zar dolunca ROLL, üç çekiç gelince sapanı geri çek ve Mary’nin vincini vur. Tuğlalar gerçek bir kum simülasyonu.',
       'puzzle-game': 'Kuleye dokun ya da basılı tutup nişan al: top kavanozları parçalar, düşen her şey zincirleme kırılır. İlk atışı reklam bilerek zayıf yapar. Toplar biterken birkaç kavanoz ayakta kalır ve oyunun kendi “+3 top” teklifi belirir. Gerçek fizik, sabit adımlı; aynı atışlar her zaman aynı sonucu verir.',
       'match-3-game': 'Taşları kaydır, beşini dizip TNT yap. Hedefler bitince zar atılır, iki maske gelirse kasa soygunu başlar. Üç kasa seçersin; sonuncusu boş çıkar ve büyük ödülün hemen yandaki kasada olduğu görünür.',
     };
     const screen = document.getElementById('screen');
     const tabs = [...document.querySelectorAll('.game')];
     const wide = matchMedia('(min-width: 881px)');
-    let current = 'puzzle-game';
+    let current = 'rescue-game';
 
     // Each game is a separate page. The frame is only a window onto one of them at a time.
     function show(id) {
       current = id;
       for (const t of tabs) t.setAttribute('aria-selected', String(t.dataset.id === id));
+      document.body.classList.toggle('puzzle', id === 'puzzle-game');
       document.body.classList.toggle('match3', id === 'match-3-game');
       document.getElementById('about').textContent = ABOUT[id];
       document.getElementById('full').href = '../' + id + '/';
