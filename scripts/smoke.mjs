@@ -12,7 +12,9 @@ const query = process.argv[3] ?? 'autoplay=1&mute=1';
 const [w, h] = (process.argv[4] ?? '390x844').split('x').map(Number);
 const label = process.argv[5] ?? 'run';
 const shotsAt = (process.argv[6] ?? '0.4,2.2,4.5,7,10,13,16,19,22,25').split(',').map(Number);
-const expect = process.argv[7] ?? (game === 'pour-decisions' ? (/ending=win/.test(query) ? 'win' : 'fail') : /ending=lose/.test(query) ? 'fail' : 'win');
+// Pour Decisions, Puzzle Game and Match-3 Game default to their near-miss ending; Triple Park defaults to a win.
+const nearMissByDefault = game === 'pour-decisions' || game === 'puzzle-game' || game === 'match-3-game';
+const expect = process.argv[7] ?? (nearMissByDefault ? (/ending=win/.test(query) ? 'win' : 'fail') : /ending=lose/.test(query) ? 'fail' : 'win');
 const out = resolve(root, 'shots');
 mkdirSync(out, { recursive: true });
 

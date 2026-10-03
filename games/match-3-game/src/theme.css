@@ -1,0 +1,362 @@
+/* Match-3 Game's look on top of the kit: violet chrome with gold rims, chunky Lilita One type, and the game's own HUD. */
+@font-face {
+  font-family: 'Lilita One';
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  src: url('../../../node_modules/@fontsource/lilita-one/files/lilita-one-latin-400-normal.woff2') format('woff2');
+}
+
+html,
+body {
+  background: #1a0a4a;
+}
+body {
+  font-family: 'Lilita One', 'Arial Rounded MT Bold', Impact, sans-serif;
+  font-weight: 400;
+}
+#ui {
+  --ink: #2a0f6b;
+  --gold: linear-gradient(#fff1a6, #ffc93c 45%, #d68a10);
+}
+
+/* The kit's goal pill is replaced by the panels below. */
+#ui .goal {
+  display: none;
+}
+#ui .headline {
+  top: var(--head-top, calc(var(--safe-t) + var(--u) * 31));
+  font-size: calc(var(--u) * 8);
+  letter-spacing: 0.02em;
+}
+#ui .toast {
+  font-size: calc(var(--u) * 11);
+}
+#ui .toast.good {
+  color: #ffe066;
+}
+#ui .banner {
+  background: linear-gradient(#ff5d7a, #e0183d);
+  border-color: #ffe066;
+}
+
+/* Install button: the game's glossy green, with a gold rim when it turns urgent. */
+#ui .cta,
+#ui .ec-cta {
+  letter-spacing: 0.03em;
+  border: calc(var(--u) * 0.6) solid #fff6c8;
+}
+#ui .cta.urgent {
+  background: linear-gradient(#ffe36e, #ff9f1a);
+}
+
+/* ---------------------------------------------------------------- HUD */
+
+.hh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hh-board,
+.hh-loot {
+  position: absolute;
+  top: calc(var(--safe-t) + var(--u) * 2.5);
+  left: calc(var(--u) * 2.5);
+  right: calc(var(--u) * 2.5);
+  height: calc(var(--u) * 26);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.6);
+}
+/* The violet ribbon that holds the panels, like the real game's top bar. */
+.hh-board::before,
+.hh-loot::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--u) * 10);
+  right: 0;
+  top: calc(var(--u) * 4);
+  bottom: calc(var(--u) * 4);
+  border-radius: calc(var(--u) * 4);
+  background: linear-gradient(#6a45e6, #4524b8);
+  border: calc(var(--u) * 0.7) solid #2a0f6b;
+  box-shadow: inset 0 calc(var(--u) * 0.8) 0 rgba(255, 255, 255, 0.25), 0 calc(var(--u) * 1) 0 rgba(10, 2, 40, 0.5);
+}
+.hh-hero {
+  position: relative;
+  flex: none;
+  width: calc(var(--u) * 24);
+  height: calc(var(--u) * 24);
+  border-radius: 50%;
+  padding: calc(var(--u) * 1);
+  background: var(--gold);
+  box-shadow: 0 0 0 calc(var(--u) * 0.6) #2a0f6b, 0 calc(var(--u) * 1) 0 calc(var(--u) * 0.6) rgba(10, 2, 40, 0.5);
+  box-sizing: border-box;
+}
+.hh-hero img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #ff8fb2, #c2185b 70%, #7a0a3a);
+}
+.hh-panel {
+  position: relative;
+  height: calc(var(--u) * 14);
+  margin-top: calc(var(--u) * 2.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--u) * 3);
+  background: linear-gradient(#ffffff, #e6e0ff);
+  border: calc(var(--u) * 0.6) solid #2a0f6b;
+  box-shadow: inset 0 calc(var(--u) * -1) 0 rgba(90, 60, 200, 0.18);
+}
+.hh-goals {
+  flex: 1;
+  gap: calc(var(--u) * 3);
+}
+.hh-moves {
+  flex: none;
+  width: calc(var(--u) * 17);
+}
+.hh-tab {
+  position: absolute;
+  top: calc(var(--u) * -4.6);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: calc(var(--u) * 0.4) calc(var(--u) * 2.6);
+  font-size: calc(var(--u) * 4);
+  line-height: 1.1;
+  border-radius: 99px;
+  background: linear-gradient(#8a64ff, #5a35d6);
+  border: calc(var(--u) * 0.5) solid #2a0f6b;
+  white-space: nowrap;
+}
+.hh-goal {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+.hh-goal img {
+  width: calc(var(--u) * 10.5);
+  height: calc(var(--u) * 10.5);
+  display: block;
+}
+.hh-goal b {
+  position: absolute;
+  right: calc(var(--u) * -2.6);
+  bottom: calc(var(--u) * -2.2);
+  font-size: calc(var(--u) * 6);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.hh-goal i {
+  display: none;
+  position: absolute;
+  right: calc(var(--u) * -2.6);
+  bottom: calc(var(--u) * -2);
+  width: calc(var(--u) * 6);
+  height: calc(var(--u) * 6);
+  border-radius: 50%;
+  background: #2fc14f;
+  border: calc(var(--u) * 0.5) solid #fff;
+  font-style: normal;
+  font-size: calc(var(--u) * 4);
+  line-height: calc(var(--u) * 5.2);
+  text-align: center;
+}
+.hh-goal.done b {
+  display: none;
+}
+.hh-goal.done i {
+  display: block;
+}
+.hh-goal.pop img {
+  animation: hh-pop 0.3s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+.hh-moves b {
+  font-size: calc(var(--u) * 10);
+  line-height: 1;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.hh-moves.tick b {
+  animation: hh-pop 0.3s ease-out;
+}
+.hh-moves.low {
+  background: linear-gradient(#ffd6dc, #ff8a9a);
+  animation: hh-throb 0.6s ease-in-out infinite alternate;
+}
+.hh-dice {
+  position: absolute;
+  right: 0;
+  top: calc(var(--u) * 24.5);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1);
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 2) calc(var(--u) * 0.6) calc(var(--u) * 0.6);
+  border-radius: 99px;
+  background: rgba(30, 10, 80, 0.75);
+  border: calc(var(--u) * 0.5) solid #ffc93c;
+}
+.hh-dice img {
+  width: calc(var(--u) * 7);
+  height: calc(var(--u) * 7);
+}
+.hh-pips {
+  display: flex;
+  gap: calc(var(--u) * 0.8);
+}
+.hh-pips em {
+  width: calc(var(--u) * 4.4);
+  height: calc(var(--u) * 2.4);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.hh-pips em.on {
+  background: linear-gradient(#a6ff9e, #2fc14f);
+}
+.hh-dice.pop {
+  animation: hh-pop 0.45s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+
+/* The heist: banker portrait and the loot counter */
+.hh-loot.in {
+  animation: hh-drop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+.hh-plate {
+  position: relative;
+  flex: 1;
+  height: calc(var(--u) * 19);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 0.6);
+}
+.hh-vault {
+  font-size: calc(var(--u) * 4.6);
+  line-height: 1;
+  color: #ffe9a8;
+  white-space: nowrap;
+}
+.hh-cash {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.4);
+  padding: calc(var(--u) * 0.4) calc(var(--u) * 4) calc(var(--u) * 0.4) calc(var(--u) * 1);
+  border-radius: 99px;
+  background: rgba(20, 6, 60, 0.6);
+}
+.hh-cash img {
+  width: calc(var(--u) * 7.5);
+}
+.hh-cash b {
+  font-size: calc(var(--u) * 8);
+  line-height: 1;
+  font-weight: 400;
+  color: #ffe066;
+  font-variant-numeric: tabular-nums;
+  min-width: 4ch;
+}
+.hh-cash.pop {
+  animation: hh-pop 0.35s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+.hh-picks {
+  font-size: calc(var(--u) * 4.2);
+  line-height: 1;
+}
+.hh-picks.pop {
+  animation: hh-pop 0.35s ease-out;
+}
+
+@keyframes hh-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+@keyframes hh-throb {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes hh-drop {
+  from { transform: translateY(-120%); }
+  to { transform: none; }
+}
+
+/* Landscape: the HUD becomes a column on the left. */
+@media (orientation: landscape) {
+  .hh-board,
+  .hh-loot {
+    top: calc(var(--safe-t) + var(--u) * 3);
+    right: auto;
+    width: calc(var(--u) * 46);
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(var(--u) * 6.5);
+  }
+  .hh-board::before,
+  .hh-loot::before {
+    left: calc(var(--u) * 2);
+    right: calc(var(--u) * 2);
+    top: calc(var(--u) * 10);
+    bottom: calc(var(--u) * -3);
+  }
+  .hh-hero {
+    align-self: center;
+    width: calc(var(--u) * 22);
+    height: calc(var(--u) * 22);
+  }
+  .hh-panel {
+    margin: 0 calc(var(--u) * 4);
+  }
+  .hh-moves {
+    width: auto;
+  }
+  .hh-dice {
+    position: relative;
+    top: auto;
+    right: auto;
+    align-self: center;
+    margin-top: calc(var(--u) * -2);
+  }
+  .hh-plate {
+    height: auto;
+    padding-bottom: calc(var(--u) * 2);
+  }
+  .hh-vault {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@media (orientation: landscape) {
+  #ui .toast {
+    font-size: calc(var(--u) * 8.5);
+  }
+}
+
+/* End card */
+#ui .endcard {
+  /* Dense enough that the safe values behind never read through the copy. */
+  background: radial-gradient(ellipse at center, rgba(62, 28, 150, 0.95) 0%, rgba(26, 8, 70, 0.97) 100%);
+}
+#ui .ec-logo span:first-child {
+  color: #ffffff;
+}
+#ui .ec-logo span:last-child {
+  color: #ffc93c;
+}
+#ui .ec-pig {
+  display: block;
+  width: 1.6em;
+  height: 1.6em;
+  margin: 0 auto -0.1em;
+  transform: rotate(4deg);
+  filter: drop-shadow(0 0.06em 0 #2a0f6b);
+}
+#ui .ec-sub {
+  color: #efe6ff;
+}

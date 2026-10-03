@@ -1,0 +1,260 @@
+/* Royal theme over the shared kit UI: violet and gold, a chunky display face. Loaded after kit/src/ui.css. */
+@font-face {
+  font-family: 'Lilita One';
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  src: url('../../../node_modules/@fontsource/lilita-one/files/lilita-one-latin-400-normal.woff2') format('woff2');
+}
+
+html,
+body {
+  background: #7cc3ff;
+}
+#ui {
+  --ink: #2a1066;
+}
+
+.headline,
+.toast,
+.floaters > div,
+.banner,
+.goal,
+.cta,
+.ec-logo,
+.ec-title,
+.ec-cta,
+.cc-hud {
+  font-family: 'Lilita One', Fredoka, 'Arial Rounded MT Bold', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.headline {
+  font-size: calc(var(--u) * 9.4);
+  color: #fff;
+}
+.toast.good {
+  color: #ffd23a;
+}
+
+.goal {
+  background: linear-gradient(#5b22c9, #3d118f);
+  border: calc(var(--u) * 0.6) solid #ffc23a;
+  box-shadow: 0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.55);
+}
+.goal svg {
+  width: calc(var(--u) * 7);
+}
+
+.banner {
+  background: linear-gradient(#ffb23a, #ff8a1f);
+}
+.banner.hot {
+  background: linear-gradient(#ff5468, #e8203a);
+}
+
+.cta,
+.ec-cta {
+  border: calc(var(--u) * 0.6) solid #fff3b0;
+}
+
+/* End card: violet, the logo in the game's gold and sky blue, the pig king on top. */
+.endcard {
+  background: radial-gradient(ellipse at center, rgba(98, 40, 210, 0.62) 0%, rgba(34, 8, 92, 0.93) 100%);
+}
+.ec-logo span:first-of-type {
+  color: #ffc23a;
+}
+.ec-logo span:last-of-type {
+  color: #5fe0ff;
+}
+.ec-king {
+  width: 1.55em;
+  margin: 0 auto -0.12em;
+  transform: rotate(4deg);
+  filter: drop-shadow(0 0.05em 0 rgba(20, 6, 60, 0.5));
+}
+.ec-king svg {
+  display: block;
+  width: 100%;
+}
+.ec-king .k-mouth,
+.ec-king .k-brows,
+.ec-king .k-sweat {
+  display: none;
+}
+.ec-king .k-happy {
+  display: inline;
+}
+
+/* ---- Pig king ---- */
+.king {
+  position: absolute;
+  top: calc(var(--safe-t) + var(--u) * 2);
+  right: calc(var(--u) * 2.5);
+  width: calc(var(--u) * 17);
+  filter: drop-shadow(0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.45));
+  animation: king-bob 2.4s ease-in-out infinite;
+}
+.king svg {
+  display: block;
+  width: 100%;
+}
+.king.bump svg {
+  animation: king-bump 0.45s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+@keyframes king-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(calc(var(--u) * -0.8)) rotate(2deg); }
+}
+@keyframes king-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18, 0.9); }
+  100% { transform: scale(1); }
+}
+.king .k-mouth,
+.king .k-brows,
+.king .k-sweat {
+  display: none;
+}
+.mood-happy .k-happy,
+.mood-wow .k-wow,
+.mood-meh .k-meh,
+.mood-worried .k-sad,
+.mood-worried .k-worried,
+.mood-worried .k-sweat,
+.mood-sad .k-sad,
+.mood-sad .k-worried,
+.mood-sad .k-sweat {
+  display: inline;
+}
+.mood-wow .k-pupil {
+  r: 3;
+}
+.mood-sad .k-pupil {
+  transform: translateY(3px);
+}
+.mood-worried {
+  animation: king-shiver 0.18s linear infinite;
+}
+@keyframes king-shiver {
+  0%, 100% { transform: translateX(0) rotate(-2deg); }
+  50% { transform: translateX(calc(var(--u) * 0.4)) rotate(1deg); }
+}
+
+/* ---- Ball counter ---- */
+.balls {
+  position: absolute;
+  left: calc(var(--u) * 3);
+  bottom: calc(var(--safe-b) + var(--u) * 23);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.2);
+  padding: calc(var(--u) * 1) calc(var(--u) * 3) calc(var(--u) * 1) calc(var(--u) * 1.2);
+  font-size: calc(var(--u) * 7);
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(#5b22c9, #3d118f);
+  border: calc(var(--u) * 0.6) solid #ffc23a;
+  border-radius: 99px;
+  box-shadow: 0 calc(var(--u) * 0.8) 0 rgba(42, 16, 102, 0.55);
+  text-shadow: 0 0.08em 0 #2a1066;
+  font-variant-numeric: tabular-nums;
+}
+.balls svg {
+  display: block;
+  width: calc(var(--u) * 8.5);
+}
+.balls.pop {
+  animation: balls-pop 0.35s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+@keyframes balls-pop {
+  40% { transform: scale(1.2); }
+}
+.balls.low {
+  background: linear-gradient(#ff5468, #c4122d);
+  animation: balls-low 0.6s ease-in-out infinite alternate;
+}
+.balls.giant {
+  background: linear-gradient(#ffd75e, #ff9f1a);
+  animation: balls-low 0.4s ease-in-out infinite alternate;
+}
+@keyframes balls-low {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+@media (orientation: landscape) {
+  .balls {
+    bottom: calc(var(--safe-b) + var(--u) * 4);
+    left: calc(var(--u) * 4);
+  }
+}
+
+/* ---- The "+3 balls" offer: the real game's level-end offer, and this ad's install moment ---- */
+.offer {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--safe-b) + var(--u) * 21);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 1.5);
+  padding: calc(var(--u) * 3) calc(var(--u) * 7) calc(var(--u) * 3.4);
+  min-width: calc(var(--u) * 62);
+  background: linear-gradient(#6a2bd6, #3d118f);
+  border: calc(var(--u) * 0.9) solid #ffc23a;
+  border-radius: calc(var(--u) * 6);
+  box-shadow: 0 calc(var(--u) * 1.2) 0 rgba(42, 16, 102, 0.6), 0 0 calc(var(--u) * 12) rgba(255, 210, 90, 0.55);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: offer-in 0.55s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes offer-in {
+  from { transform: translateX(-50%) scale(0.3); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+.offer-title {
+  font-size: calc(var(--u) * 8.5);
+  color: #ffd23a;
+  line-height: 1;
+}
+.offer-row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1);
+}
+.offer-row svg {
+  display: block;
+  width: calc(var(--u) * 10);
+  animation: offer-ball 0.9s ease-in-out infinite alternate;
+}
+.offer-row span:nth-child(2) svg { animation-delay: 0.15s; }
+.offer-row span:nth-child(3) svg { animation-delay: 0.3s; }
+@keyframes offer-ball {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(var(--u) * -1.6)); }
+}
+.offer-row b {
+  font-size: calc(var(--u) * 12);
+  color: #fff;
+  margin-left: calc(var(--u) * 1.5);
+}
+.offer-sub {
+  font-size: calc(var(--u) * 5.6);
+  color: #ffe3f0;
+}
+@media (orientation: landscape) {
+  .offer {
+    left: auto;
+    right: calc(var(--u) * 4);
+    bottom: calc(var(--safe-b) + var(--u) * 20);
+    transform: none;
+    animation-name: offer-in-l;
+  }
+  @keyframes offer-in-l {
+    from { transform: scale(0.3); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+}
